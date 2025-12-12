@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHEZ AZIZ LE CUISINIER | Restaurant Gastronomique</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        /* ============ STYLES PRINCIPAUX ============ */
+        :root {
+            --rouge-appetissant: #c0392b;
+            --orange-chaleureux: #e67e22;
+            --vert-frais: #27ae60;
+            --noir-elegant: #1a1a1a;
+            --blanc-creme: #f8f5f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: var(--blanc-creme);
+            color: var(--noir-elegant);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.08);
+            border-radius: 0;
+            overflow: hidden;
+        }
+
+        /* ============ HEADER ============ */
+        .header {
+            background: linear-gradient(rgba(26, 26, 26, 0.85), rgba(26, 26, 26, 0.9)), 
+                        url('https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        .header-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .restaurant-logo {
+            font-size: 3.5em;
+            color: var(--orange-chaleureux);
+            margin-bottom: 15px;
+        }
+
+        .header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.2em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header-cta {
+            display: inline-block;
+            background: linear-gradient(to right, var(--rouge-appetissant), var(--orange-chaleureux));
+            color: white;
+            padding: 15px 35px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1em;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .header-cta:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        /* ============ SECTION CHATBOT ============ */
+        .main-content {
+            display: flex;
+            flex-wrap: wrap;
+            min-height: 700px;
+        }
+
+        .chatbot-section {
+            flex: 1;
+            min-width: 350px;
+            padding: 30px;
+            background: var(--blanc-creme);
+            border-right: 1px solid #eee;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chatbot-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--orange-chaleureux);
+        }
+
+        .chatbot-avatar {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--orange-chaleureux), var(--rouge-appetissant));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 20px;
+            font-size: 2em;
+            color: white;
+        }
+
+        /* ============ CHAT ============ */
+        .chat-container {
+            flex: 1;
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            overflow-y: auto;
+            max-height: 400px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .message {
+            margin-bottom: 15px;
+            padding: 14px 18px;
+            border-radius: 18px;
+            max-width: 85%;
+            line-height: 1.5;
+            animation: fadeIn 0.3s ease;
+            word-wrap: break-word;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .message.bot {
+            background: #f5e6d3;
+            color: var(--noir-elegant);
+            align-self: flex-start;
+            border-left: 4px solid var(--orange-chaleureux);
+        }
+
+        .message.user {
+            background: linear-gradient(135deg, var(--orange-chaleureux), var(--rouge-appetissant));
+            color: white;
+            align-self: flex-end;
+        }
+
+        .chat-input-container {
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-input-container input {
+            flex: 1;
+            padding: 15px;
+            border: 2px solid #eee;
+            border-radius: 10px;
+            font-size: 1em;
+            transition: all 0.3s;
+        }
+
+        .chat-input-container input:focus {
+            outline: none;
+            border-color: var(--orange-chaleureux);
+        }
+
+        .chat-input-container button {
+            padding: 0 25px;
+            background: linear-gradient(to right, var(--rouge-appetissant), var(--orange-chaleureux));
+            border: none;
+            border-radius: 10px;
+            color: white;
+            cursor: pointer;
+            font-size: 1.2em;
+            transition: all 0.3s;
+        }
+
+        .chat-input-container button:hover {
+            transform: scale(1.05);
+        }
+
+        /* ============ MENU ============ */
+        .menu-section {
+            flex: 2;
+            min-width: 400px;
+            padding: 30px;
+            background: white;
+        }
+
+        .section-title {
+            color: var(--noir-elegant);
+            font-size: 2em;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--orange-chaleureux);
+            position: relative;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .menu-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .menu-item {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            transition: all 0.4s;
+        }
+
+        .menu-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .item-image {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            background-color: #f5f5f5;
+        }
+
+        .item-price-tag {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: linear-gradient(135deg, var(--rouge-appetissant), var(--orange-chaleureux));
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 1.1em;
+            z-index: 2;
+        }
+
+        .item-content {
+            padding: 25px;
+        }
+
+        .item-name {
+            font-size: 1.3em;
+            color: var(--noir-elegant);
+            font-weight: 700;
+            font-family: 'Playfair Display', serif;
+            margin-bottom: 10px;
+        }
+
+        .add-to-cart-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(to right, var(--orange-chaleureux), var(--rouge-appetissant));
+            border: none;
+            color: white;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1em;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        .add-to-cart-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 15px rgba(192, 57, 43, 0.3);
+        }
+
+        /* ============ PANIER ============ */
+        .cart-section {
+            padding: 40px 30px;
+            background: var(--blanc-creme);
+            border-top: 1px solid #eee;
+        }
+
+        .cart-items {
+            margin-bottom: 25px;
+            max-height: 250px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        .cart-items::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .cart-items::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .cart-items::-webkit-scrollbar-thumb {
+            background: var(--orange-chaleureux);
+            border-radius: 10px;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px;
+            background: white;
+            border-radius: 10px;
+            margin-bottom: 12px;
+            border: 1px solid #eee;
+            transition: all 0.3s;
+        }
+
+        .cart-item:hover {
+            border-color: var(--orange-chaleureux);
+        }
+
+        .cart-total {
+            font-size: 1.4em;
+            font-weight: 700;
+            color: var(--noir-elegant);
+            text-align: right;
+            padding: 25px 0;
+            border-top: 2px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cart-total-amount {
+            color: var(--rouge-appetissant);
+            font-size: 1.6em;
+        }
+
+        .cart-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: flex-end;
+        }
+
+        .cart-btn {
+            padding: 16px 32px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 1em;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .cart-btn.checkout {
+            background: linear-gradient(to right, var(--rouge-appetissant), var(--orange-chaleureux));
+            color: white;
+        }
+
+        .cart-btn.checkout:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(192, 57, 43, 0.3);
+        }
+
+        /* ============ MODAL ============ */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: white;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 500px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            animation: modalSlideIn 0.3s ease;
+        }
+
+        @keyframes modalSlideIn {
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .modal-header {
+            background: linear-gradient(to right, var(--rouge-appetissant), var(--orange-chaleureux));
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .modal-content {
+            padding: 30px;
+        }
+
+        /* ============ FOOTER ============ */
+        .footer {
+            background: var(--noir-elegant);
+            color: white;
+            padding: 25px;
+            text-align: center;
+            font-size: 0.9em;
+        }
+
+        /* ============ RESPONSIVE ============ */
+        @media (max-width: 1100px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .chatbot-section {
+                border-right: none;
+                border-bottom: 1px solid #eee;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.4em;
+            }
+            
+            .menu-items {
+                grid-template-columns: 1fr;
+            }
+            
+            .cart-actions {
+                flex-direction: column;
+            }
+            
+            .cart-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-content">
+                <div class="restaurant-logo">
+                    <i class="fas fa-utensils"></i>
+                </div>
+                <h1>CHEZ AZIZ LE CUISINIER</h1>
+                <p>Restaurant Gastronomique • Saveurs Authentiques</p>
+                <a href="#menu" class="header-cta">Découvrir notre carte</a>
+            </div>
+        </div>
+
+        <!-- Section principale -->
+        <div class="main-content">
+            <!-- Chatbot -->
+            <div class="chatbot-section">
+                <div class="chatbot-header">
+                    <div class="chatbot-avatar">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="chatbot-info">
+                        <h3>Assistant Aziz</h3>
+                        <p>En ligne • Prêt à prendre votre commande</p>
+                    </div>
+                </div>
+
+                <div class="chat-container" id="chatMessages">
+                    <!-- Messages -->
+                </div>
+
+                <div class="chat-input-container">
+                    <input type="text" id="chatInput" placeholder="Que désirez-vous commander ?">
+                    <button id="sendBtn" onclick="envoyerMessage()">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Menu -->
+            <div class="menu-section" id="menu">
+                <h2 class="section-title">Notre Carte Gastronomique</h2>
+                <div class="menu-items" id="menuItems">
+                    <!-- Items générés par JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Panier -->
+        <div class="cart-section">
+            <h2 class="section-title">Votre Panier</h2>
+            <div class="cart-items" id="cartItems">
+                <!-- Articles du panier -->
+            </div>
+            <div class="cart-total">
+                <span>Total de votre commande :</span>
+                <span class="cart-total-amount" id="cartTotal">0 FCFA</span>
+            </div>
+            <div class="cart-actions">
+                <button class="cart-btn checkout" onclick="showCheckoutModal()">
+                    <i class="fas fa-file-invoice-dollar"></i> Finaliser & Générer Facture
+                </button>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>CHEZ AZIZ LE CUISINIER • Ouvert 7j/7 • Livraison gratuite à partir de 15.000 FCFA</p>
+        </div>
+    </div>
+
+    <!-- Modal de facturation -->
+    <div class="modal-overlay" id="checkoutModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Finalisation de votre commande</h3>
+            </div>
+            <div class="modal-content">
+                <div id="orderForm">
+                    <p><strong>Votre commande est presque prête !</strong></p>
+                    <p>Veuillez fournir vos informations pour la facture :</p>
+                    
+                    <form id="customerForm" style="margin: 20px 0;">
+                        <div style="margin-bottom: 15px;">
+                            <label style="display: block; margin-bottom: 5px;">Nom complet *</label>
+                            <input type="text" id="customerName" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+                        </div>
+                        <div style="margin-bottom: 15px;">
+                            <label style="display: block; margin-bottom: 5px;">Téléphone *</label>
+                            <input type="tel" id="customerPhone" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+                        </div>
+                    </form>
+                    
+                    <div id="orderSummary">
+                        <!-- Récapitulatif -->
+                    </div>
+                    
+                    <div style="margin-top: 30px; text-align: center;">
+                        <button onclick="closeCheckoutModal()" style="padding: 10px 20px; margin-right: 10px; background: #ddd; border: none; border-radius: 5px; cursor: pointer;">
+                            Annuler
+                        </button>
+                        <button onclick="processOrder()" style="padding: 10px 20px; background: var(--rouge-appetissant); color: white; border: none; border-radius: 5px; cursor: pointer;">
+                            Confirmer & Générer Facture
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Écran de chargement PDF (CACHÉ PAR DÉFAUT) -->
+    <div id="pdfLoading" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.85); color: white; z-index: 3000; flex-direction: column; justify-content: center; align-items: center;">
+        <i class="fas fa-file-pdf" style="font-size: 4em; margin-bottom: 20px; animation: pulse 1.5s infinite;"></i>
+        <p style="font-size: 1.2em;">Génération de votre facture en cours...</p>
+        <p style="margin-top: 10px; font-size: 0.9em; color: #ccc;">Téléchargement automatique dans quelques instants</p>
+    </div>
+
+    <script>
+        // ============================================
+        // DONNÉES DU MENU (AVEC IMAGE VIDE POUR ATTIÉKÉ)
+        // ============================================
+        const menuData = [
+            { 
+                id: 1, 
+                name: "Tajine Royal d'Agneau", 
+                price: 12500, 
+                image: "https://images.pexels.com/photos/1052189/pexels-photo-1052189.jpeg",
+                description: "Agneau mijoté avec pruneaux et amandes"
+            },
+            { 
+                id: 2, 
+                name: "Poulet Braisé Maison", 
+                price: 8500, 
+                image: "https://images.pexels.com/photos/2338407/pexels-photo-2338407.jpeg",
+                description: "Poulet mariné et grillé à la braise"
+            },
+            { 
+                id: 3, 
+                name: "Filet de Bar Grillé", 
+                price: 9800, 
+                image: "https://images.pexels.com/photos/262959/pexels-photo-262959.jpeg",
+                description: "Filet de bar frais grillé au citron"
+            },
+            { 
+                id: 8, 
+                name: "Attiéké Poisson Braisé", 
+                price: 6500, 
+                image: "", // CHAMP LIBRE COMME DEMANDÉ
+                description: "Semoule de manioc avec poisson braisé"
+            },
+            { 
+                id: 11, 
+                name: "Burger Royal", 
+                price: 6200, 
+                image: "https://images.pexels.com/photos/1639557/pexels-photo-1639557.jpeg",
+                description: "Burger artisanal avec frites maison"
+            }
+        ];
+
+        // ============================================
+        // VARIABLES GLOBALES
+        // ============================================
+        let panier = [];
+        let commandeActuelle = null;
+
+        // ============================================
+        // FONCTIONS DU PANIER
+        // ============================================
+
+        // Initialiser le menu
+        function initMenu() {
+            const itemsContainer = document.getElementById('menuItems');
+            itemsContainer.innerHTML = '';
+            
+            menuData.forEach(item => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'menu-item';
+                
+                // Gérer l'affichage de l'image (vide ou non)
+                let imageHTML = '';
+                if (item.image && item.image.trim() !== '') {
+                    imageHTML = `<div class="item-image" style="background-image: url('${item.image}')">
+                                    <div class="item-price-tag">${item.price.toLocaleString()} FCFA</div>
+                                </div>`;
+                } else {
+                    // Afficher un fond uni avec une icône quand pas d'image
+                    imageHTML = `<div class="item-image" style="background-color: #e9e9e9; display: flex; align-items: center; justify-content: center;">
+                                    <div style="text-align: center; color: #888;">
+                                        <i class="fas fa-utensils" style="font-size: 3em; margin-bottom: 10px;"></i>
+                                        <p style="font-size: 0.9em;">Image non disponible</p>
+                                    </div>
+                                    <div class="item-price-tag">${item.price.toLocaleString()} FCFA</div>
+                                </div>`;
+                }
+                
+                itemDiv.innerHTML = `
+                    ${imageHTML}
+                    <div class="item-content">
+                        <div class="item-name">${item.name}</div>
+                        <p style="color: #666; margin-bottom: 15px;">${item.description}</p>
+                        <button class="add-to-cart-btn" onclick="addToCart(${item.id})">
+                            <i class="fas fa-cart-plus"></i> Ajouter au panier
+                        </button>
+                    </div>
+                `;
+                itemsContainer.appendChild(itemDiv);
+            });
+        }
+
+        // Ajouter au panier
+        function addToCart(idPlat) {
+            const plat = menuData.find(p => p.id === idPlat);
+            if (!plat) return;
+            
+            const index = panier.findIndex(item => item.id === idPlat);
+            
+            if (index !== -1) {
+                panier[index].quantite += 1;
+            } else {
+                panier.push({
+                    id: plat.id,
+                    name: plat.name,
+                    price: plat.price,
+                    quantite: 1
+                });
+            }
+            
+            updateCartDisplay();
+            showNotification(`${plat.name} ajouté au panier !`);
+            ajouterMessageBot(`✅ **${plat.name}** ajouté à votre panier !`);
+        }
+
+        // Mettre à jour l'affichage du panier
+        function updateCartDisplay() {
+            const cartItemsContainer = document.getElementById('cartItems');
+            const cartTotalElement = document.getElementById('cartTotal');
+            
+            if (panier.length === 0) {
+                cartItemsContainer.innerHTML = '<p style="text-align: center; padding: 40px; color: #666;">Votre panier est vide</p>';
+                cartTotalElement.textContent = "0 FCFA";
+                return;
+            }
+            
+            cartItemsContainer.innerHTML = '';
+            let total = 0;
+            
+            panier.forEach(item => {
+                const itemTotal = item.price * item.quantite;
+                total += itemTotal;
+                
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'cart-item';
+                itemDiv.innerHTML = `
+                    <div>
+                        <div style="font-weight: bold;">${item.name}</div>
+                        <div style="color: #666;">${item.quantite} x ${item.price.toLocaleString()} FCFA</div>
+                    </div>
+                    <div style="font-weight: bold; color: var(--rouge-appetissant);">
+                        ${itemTotal.toLocaleString()} FCFA
+                    </div>
+                `;
+                cartItemsContainer.appendChild(itemDiv);
+            });
+            
+            cartTotalElement.textContent = total.toLocaleString() + " FCFA";
+        }
+
+        // ============================================
+        // SYSTÈME DE FACTURATION PDF
+        // ============================================
+
+        // Fonction pour générer la facture PDF
+        function genererFacturePDF(commande) {
+            // Afficher l'écran de chargement
+            document.getElementById('pdfLoading').style.display = 'flex';
+            
+            setTimeout(() => {
+                try {
+                    const { jsPDF } = window.jspdf;
+                    const doc = new jsPDF('p', 'mm', 'a4');
+                    
+                    const pageWidth = doc.internal.pageSize.getWidth();
+                    const margin = 20;
+                    
+                    // ============ EN-TÊTE ============
+                    doc.setFontSize(24);
+                    doc.setTextColor(192, 57, 43);
+                    doc.setFont('helvetica', 'bold');
+                    doc.text('CHEZ AZIZ LE CUISINIER', pageWidth / 2, margin, { align: 'center' });
+                    
+                    doc.setFontSize(12);
+                    doc.setTextColor(100, 100, 100);
+                    doc.setFont('helvetica', 'normal');
+                    doc.text('Restaurant Gastronomique', pageWidth / 2, margin + 8, { align: 'center' });
+                    
+                    doc.setDrawColor(230, 126, 34);
+                    doc.setLineWidth(1);
+                    doc.line(margin, margin + 15, pageWidth - margin, margin + 15);
+                    
+                    // ============ INFORMATIONS ============
+                    let y = margin + 25;
+                    doc.setFontSize(10);
+                    doc.setTextColor(0, 0, 0);
+                    doc.text(`Facture N°: ${commande.numero}`, margin, y);
+                    doc.text(`Date: ${new Date(commande.date).toLocaleDateString('fr-FR')}`, pageWidth - margin, y, { align: 'right' });
+                    
+                    y += 7;
+                    doc.text(`Client: ${commande.client.nom}`, margin, y);
+                    doc.text(`Téléphone: ${commande.client.telephone}`, pageWidth - margin, y, { align: 'right' });
+                    
+                    // ============ TABLEAU DES ARTICLES ============
+                    y += 15;
+                    doc.setFontSize(12);
+                    doc.setFont('helvetica', 'bold');
+                    doc.setTextColor(192, 57, 43);
+                    doc.text('DÉTAILS DE LA COMMANDE', pageWidth / 2, y, { align: 'center' });
+                    
+                    // En-têtes du tableau
+                    y += 10;
+                    doc.setFontSize(10);
+                    doc.setTextColor(0, 0, 0);
+                    
+                    // Colonnes
+                    const colArticle = margin;
+                    const colQte = margin + 100;
+                    const colPrix = margin + 130;
+                    const colTotal = pageWidth - margin;
+                    
+                    doc.text('Article', colArticle, y);
+                    doc.text('Qté', colQte, y);
+                    doc.text('Prix unitaire', colPrix, y);
+                    doc.text('Total', colTotal, y, { align: 'right' });
+                    
+                    // Ligne sous les en-têtes
+                    y += 3;
+                    doc.setDrawColor(150, 150, 150);
+                    doc.setLineWidth(0.3);
+                    doc.line(margin, y, pageWidth - margin, y);
+                    
+                    // Articles
+                    y += 7;
+                    doc.setFont('helvetica', 'normal');
+                    
+                    commande.articles.forEach((article) => {
+                        // Vérifier la position Y pour éviter le débordement
+                        if (y > 250) {
+                            doc.addPage();
+                            y = margin;
+                        }
+                        
+                        // Article (tronqué si trop long)
+                        let articleName = article.name;
+                        if (articleName.length > 30) {
+                            articleName = articleName.substring(0, 27) + '...';
+                        }
+                        doc.text(articleName, colArticle, y);
+                        
+                        // Quantité
+                        doc.text(article.quantite.toString(), colQte, y);
+                        
+                        // Prix unitaire
+                        const prixUnitaire = article.price.toLocaleString() + ' FCFA';
+                        doc.text(prixUnitaire, colPrix, y);
+                        
+                        // Total article
+                        const totalArticle = (article.price * article.quantite).toLocaleString() + ' FCFA';
+                        doc.text(totalArticle, colTotal, y, { align: 'right' });
+                        
+                        y += 8;
+                    });
+                    
+                    // ============ TOTAUX ============
+                    y += 5;
+                    doc.setDrawColor(150, 150, 150);
+                    doc.setLineWidth(0.5);
+                    doc.line(margin, y, pageWidth - margin, y);
+                    
+                    y += 10;
+                    
+                    // Sous-total
+                    doc.text('Sous-total:', colTotal - 60, y);
+                    doc.text(commande.sousTotal.toLocaleString() + ' FCFA', colTotal, y, { align: 'right' });
+                    
+                    // Frais de livraison
+                    y += 8;
+                    doc.text('Frais de livraison:', colTotal - 60, y);
+                    doc.text(commande.fraisLivraison === 0 ? 'GRATUIT' : commande.fraisLivraison.toLocaleString() + ' FCFA', colTotal, y, { align: 'right' });
+                    
+                    // Ligne de séparation
+                    y += 10;
+                    doc.setDrawColor(230, 126, 34);
+                    doc.setLineWidth(1);
+                    doc.line(colTotal - 100, y, colTotal, y);
+                    
+                    // TOTAL FINAL
+                    y += 8;
+                    doc.setFontSize(14);
+                    doc.setFont('helvetica', 'bold');
+                    doc.setTextColor(192, 57, 43);
+                    doc.text('TOTAL À PAYER:', colTotal - 60, y);
+                    
+                    const totalFinal = commande.totalFinal.toLocaleString() + ' FCFA';
+                    doc.text(totalFinal, colTotal, y, { align: 'right' });
+                    
+                    // ============ MENTIONS ============
+                    y += 25;
+                    doc.setFontSize(8);
+                    doc.setFont('helvetica', 'italic');
+                    doc.setTextColor(100, 100, 100);
+                    
+                    doc.text('Merci pour votre commande !', pageWidth / 2, y, { align: 'center' });
+                    y += 5;
+                    doc.text('CHEZ AZIZ LE CUISINIER - Rue de la Gastronomie, Cotonou', pageWidth / 2, y, { align: 'center' });
+                    y += 5;
+                    doc.text('Téléphone: +229 60 123 456 • Email: contact@chezaziz.com', pageWidth / 2, y, { align: 'center' });
+                    y += 5;
+                    doc.text('Mode de paiement: Espèces ou Mobile Money', pageWidth / 2, y, { align: 'center' });
+                    
+                    // ============ TÉLÉCHARGEMENT ============
+                    // Masquer l'écran de chargement
+                    document.getElementById('pdfLoading').style.display = 'none';
+                    
+                    // Télécharger le PDF
+                    doc.save(`Facture_${commande.numero}_Chez_Aziz.pdf`);
+                    
+                    // Afficher message de succès
+                    showSuccessMessage();
+                    
+                } catch (error) {
+                    console.error("Erreur PDF:", error);
+                    document.getElementById('pdfLoading').style.display = 'none';
+                    alert("Erreur lors de la génération de la facture. Veuillez réessayer.");
+                }
+            }, 1000);
+        }
+
+        // ============================================
+        // GESTION DE LA COMMANDE
+        // ============================================
+
+        // Afficher le modal de commande
+        function showCheckoutModal() {
+            if (panier.length === 0) {
+                alert("Votre panier est vide ! Ajoutez des plats avant de finaliser votre commande.");
+                return;
+            }
+            
+            updateOrderSummary();
+            document.getElementById('checkoutModal').classList.add('active');
+        }
+
+        // Fermer le modal
+        function closeCheckoutModal() {
+            document.getElementById('checkoutModal').classList.remove('active');
+        }
+
+        // Mettre à jour le récapitulatif
+        function updateOrderSummary() {
+            const sousTotal = panier.reduce((total, item) => total + (item.price * item.quantite), 0);
+            const fraisLivraison = sousTotal >= 15000 ? 0 : 1000;
+            const totalFinal = sousTotal + fraisLivraison;
+            
+            const summary = document.getElementById('orderSummary');
+            summary.innerHTML = `
+                <div style="background: #f9f9f9; padding: 15px; border-radius: 8px; margin: 20px 0;">
+                    <p style="font-weight: bold; margin-bottom: 10px;">Récapitulatif de votre commande :</p>
+                    ${panier.map(item => `
+                        <div style="display: flex; justify-content: space-between; margin: 8px 0;">
+                            <span>${item.quantite}x ${item.name}</span>
+                            <span>${(item.price * item.quantite).toLocaleString()} FCFA</span>
+                        </div>
+                    `).join('')}
+                    <div style="border-top: 1px solid #ddd; margin-top: 15px; padding-top: 15px;">
+                        <div style="display: flex; justify-content: space-between; margin: 5px 0;">
+                            <span>Sous-total :</span>
+                            <span>${sousTotal.toLocaleString()} FCFA</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin: 5px 0;">
+                            <span>Frais de livraison :</span>
+                            <span>${fraisLivraison === 0 ? 'GRATUIT' : fraisLivraison.toLocaleString() + ' FCFA'}</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; font-weight: bold; margin-top: 15px; padding-top: 10px; border-top: 2px solid #ddd; color: var(--rouge-appetissant);">
+                            <span>TOTAL À PAYER :</span>
+                            <span>${totalFinal.toLocaleString()} FCFA</span>
+                        </div>
+                    </div>
+                </div>
+                <p style="font-size: 0.9em; color: #666; text-align: center; margin-top: 10px;">
+                    <i class="fas fa-info-circle"></i> La facture sera générée au format PDF après confirmation
+                </p>
+            `;
+        }
+
+        // Traiter la commande
+        function processOrder() {
+            const customerName = document.getElementById('customerName').value.trim();
+            const customerPhone = document.getElementById('customerPhone').value.trim();
+            
+            if (!customerName || !customerPhone) {
+                alert("Veuillez remplir tous les champs obligatoires");
+                return;
+            }
+            
+            // Validation du téléphone (format simple)
+            const phoneRegex = /^[0-9\s\-\+\(\)]{8,20}$/;
+            if (!phoneRegex.test(customerPhone)) {
+                alert("Veuillez entrer un numéro de téléphone valide");
+                return;
+            }
+            
+            const sousTotal = panier.reduce((total, item) => total + (item.price * item.quantite), 0);
+            const fraisLivraison = sousTotal >= 15000 ? 0 : 1000;
+            const totalFinal = sousTotal + fraisLivraison;
+            
+            // Créer l'objet commande
+            commandeActuelle = {
+                numero: 'CMD-' + Date.now().toString().slice(-6),
+                date: new Date().toISOString(),
+                client: {
+                    nom: customerName,
+                    telephone: customerPhone
+                },
+                articles: panier.map(item => ({
+                    ...item,
+                    price: item.price,
+                    quantite: item.quantite
+                })),
+                sousTotal: sousTotal,
+                fraisLivraison: fraisLivraison,
+                totalFinal: totalFinal
+            };
+            
+            // Générer la facture PDF
+            genererFacturePDF(commandeActuelle);
+        }
+
+        // Afficher message de succès
+        function showSuccessMessage() {
+            const message = `
+                🎉 **COMMANDE CONFIRMÉE !** 🎉
+                
+                Merci ${commandeActuelle.client.nom} pour votre commande !
+                
+                **Montant total : ${commandeActuelle.totalFinal.toLocaleString()} FCFA**
+                
+                Votre facture a été téléchargée automatiquement.
+                Notre équipe vous contactera au ${commandeActuelle.client.telephone} pour confirmer la livraison.
+                
+                Préparation estimée : 30-45 minutes
+                
+                Merci pour votre confiance ! 😊
+            `;
+            
+            ajouterMessageBot(message);
+            
+            // Réinitialiser le panier
+            panier = [];
+            updateCartDisplay();
+            
+            // Fermer le modal et réinitialiser le formulaire
+            closeCheckoutModal();
+            document.getElementById('customerForm').reset();
+        }
+
+        // ============================================
+        // SYSTÈME DE NOTIFICATION
+        // ============================================
+
+        function showNotification(message) {
+            // Créer une notification
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: linear-gradient(135deg, var(--vert-frais), #2ecc71);
+                color: white;
+                padding: 15px 25px;
+                border-radius: 10px;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+                z-index: 1000;
+                animation: slideIn 0.3s ease, fadeOut 0.3s ease 2.7s forwards;
+                max-width: 350px;
+                font-weight: 600;
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            // Ajouter l'animation de fondu
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes slideIn {
+                    from { transform: translateX(100%); opacity: 0; }
+                    to { transform: translateX(0); opacity: 1; }
+                }
+                @keyframes fadeOut {
+                    from { opacity: 1; }
+                    to { opacity: 0; }
+                }
+                @keyframes pulse {
+                    0% { transform: scale(1); }
+                    50% { transform: scale(1.1); }
+                    100% { transform: scale(1); }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            setTimeout(() => {
+                notification.remove();
+                style.remove();
+            }, 3000);
+        }
+
+        // ============================================
+        // CHATBOT
+        // ============================================
+
+        function ajouterMessageBot(texte) {
+            const messagesDiv = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message bot';
+            messageDiv.innerHTML = texte.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
+            messagesDiv.appendChild(messageDiv);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        function envoyerMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            
+            if (!message) return;
+            
+            // Afficher message utilisateur
+            const messagesDiv = document.getElementById('chatMessages');
+            const userDiv = document.createElement('div');
+            userDiv.className = 'message user';
+            userDiv.textContent = message;
+            messagesDiv.appendChild(userDiv);
+            
+            input.value = '';
+            
+            // Réponse automatique
+            setTimeout(() => {
+                let reponse = "Je comprends que vous souhaitez commander. ";
+                reponse += "Sélectionnez vos plats dans le menu à droite, ";
+                reponse += "ajoutez-les au panier puis finalisez votre commande avec le bouton en bas de page.";
+                ajouterMessageBot(reponse);
+            }, 500);
+        }
+
+        // ============================================
+        // INITIALISATION
+        // ============================================
+
+        function init() {
+            initMenu();
+            updateCartDisplay();
+            
+            // Message de bienvenue
+            setTimeout(() => {
+                ajouterMessageBot("👨‍🍳 **BIENVENUE CHEZ AZIZ LE CUISINIER**<br><br>Je suis votre assistant. Sélectionnez vos plats dans le menu à droite, ajoutez-les au panier puis finalisez votre commande.");
+            }, 500);
+            
+            // Permettre Enter pour envoyer un message
+            document.getElementById('chatInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    envoyerMessage();
+                }
+            });
+            
+            // Fermer le modal en cliquant à l'extérieur
+            document.getElementById('checkoutModal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeCheckoutModal();
+                }
+            });
+        }
+
+        // Démarrer l'application
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
